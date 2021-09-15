@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {} from './actions/userActions';
+import {} from '../actions/userActions';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 const Home = () => {

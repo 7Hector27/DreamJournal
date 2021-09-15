@@ -3,12 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('./middleware');
-const path = require('path');
 const saltRounds = 10;
-const fs = require('fs');
 const User = require('../schema/userSchema');
 
-router.post('/user', async (req, res) => {
+router.post('/user/register', async (req, res) => {
   const { name, email, password } = req.body;
   const existingUser = await User.findOne({ email });
   existingUser &&
@@ -51,15 +49,6 @@ router.get('/user', authMiddleware, async (req, res) => {
     const user = await User.findById({ _id });
     !user && res.json({ msg: 'Unauthorized' }).status(400);
     res.send(user);
-  } catch (err) {
-    res.send(err).status(400);
-  }
-});
-
-router.get('/users', async (req, res) => {
-  try {
-    const a = await User.find();
-    res.send(a);
   } catch (err) {
     res.send(err).status(400);
   }
