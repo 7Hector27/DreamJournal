@@ -54,4 +54,25 @@ router.get('/user', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/user/journal', authMiddleware, async (req, res) => {
+  const _id = req.user._id;
+  const user = await User.findById({ _id });
+  res.json(user);
+});
+
+router.put('/user/journal', authMiddleware, async (req, res) => {
+  const { journal } = req.body;
+  const _id = req.user._id;
+  const updatedJournal = {
+    journal,
+  };
+  // console.log(updatedJournal);
+  await User.updateOne({ _id }, updatedJournal);
+  res.json('journals updated');
+});
+
+router.delete('/user/journal/:id', authMiddleware, async (req, res) => {
+  res.json('Journal Deleted');
+});
+
 module.exports = router;

@@ -6,6 +6,7 @@ import './App.css';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { rootReducer } from './reducers';
+import './bootstrap.min.css';
 
 const middleware = [thunk];
 

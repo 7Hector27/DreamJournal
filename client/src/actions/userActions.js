@@ -24,3 +24,9 @@ export const userLogin = (email, password) => async (dispatch) => {
     }
   } catch (error) {}
 };
+
+export const userLogOut = () => (dispatch) => {
+  dispatch({
+    type: 'USER_LOGOUT',
+  });
+};

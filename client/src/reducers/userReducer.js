@@ -10,14 +10,13 @@ export function userReducer(state = initialState, action) {
           authenticated: action.payload.authenticated,
         },
       };
-    case 'ADMIN_LOGOUT':
+    case 'USER_LOGOUT':
       return {
         ...state,
         data: {
           authenticated: false,
         },
       };
-
     default:
       return state;
   }
