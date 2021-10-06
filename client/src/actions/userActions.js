@@ -7,13 +7,13 @@ export const userLogin = (email, password) => async (dispatch) => {
     });
     console.log(response);
     if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: {
           authenticated: true,
         },
       });
-      localStorage.setItem('token', response.data.token);
     } else {
       dispatch({
         type: 'LOGIN_ERROR',

@@ -1,18 +1,25 @@
 import React from 'react';
 import { Button, Accordion } from 'react-bootstrap';
-
+import axios from 'axios';
 const UserJournals = ({ posts, loading }) => {
+  const token = localStorage.getItem('token');
+  const config = {
+    headers: {
+      'x-auth-token': token,
+    },
+  };
+
   if (loading) {
     return <h2>Loading Journals...</h2>;
   }
 
-  const deleteDream = (id) => {
-    alert(id);
+  const deleteDream = async (id) => {
+    await axios.delete(`/api/user/journal/${id}`, config);
   };
 
   return (
     <>
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <Accordion>
           <Accordion.Item
             eventKey='1'

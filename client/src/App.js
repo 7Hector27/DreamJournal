@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import LandingPage from './layout/LandingPage';
 import Home from './layout/Home';
+import Feed from './layout/Feed';
 const App = () => {
   return (
     <>
@@ -14,6 +15,7 @@ const App = () => {
             <NavbarComponent />
             <Container>
               <Route exact path='/home' component={Home} />
+              <Route exact path='/feed' component={Feed} />
               <Route exact path='/landingPage' component={LandingPage} />
             </Container>
           </div>

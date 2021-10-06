@@ -4,6 +4,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogOut } from '../actions/userActions';
+import LogoutIcon from '@mui/icons-material/Logout';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
 const NavbarComponent = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -11,20 +13,29 @@ const NavbarComponent = () => {
   const signOutHandler = () => {
     dispatch(userLogOut());
     localStorage.setItem('token', '');
-    history.push('/landingPage');
+    history.push('/');
   };
 
   return (
-    <Navbar bg='dark' variant='dark'>
+    <Navbar
+      style={{
+        backgroundColor: '#021C33',
+      }}
+    >
       <Container>
-        <LinkContainer to={'/'}>
-          <Navbar.Brand>Dream Journal</Navbar.Brand>
-        </LinkContainer>
+        <Navbar.Brand style={{ color: 'white', alignItems: 'flexStart' }}>
+          Dream Journal
+          <NightsStayIcon />
+        </Navbar.Brand>
+
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ml-auto'>
-            <LinkContainer to={`/`}>
-              <Nav.Link>landingPage</Nav.Link>
+            <LinkContainer to={`/home`} style={{ color: 'white' }}>
+              <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to={`/Feed`} style={{ color: 'white' }}>
+              <Nav.Link>Feed</Nav.Link>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
@@ -33,7 +44,9 @@ const NavbarComponent = () => {
       <Nav className='ml-auto'>
         {' '}
         <Container>
-          <Nav.Link onClick={signOutHandler}>Log Out</Nav.Link>
+          <Nav.Link onClick={signOutHandler} style={{ color: 'white' }}>
+            <LogoutIcon />
+          </Nav.Link>
         </Container>
       </Nav>
     </Navbar>
