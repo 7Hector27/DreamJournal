@@ -1,8 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const routes = require('./routes/userRoutes');
 require('dotenv').config();
+
+// Import of Routes
+const userRoutes = require('./routes/userRoutes');
+const journalRoutes = require('./routes/journalRoutes');
 
 // Import of database
 const connectDb = require('./database/db');
@@ -11,7 +14,7 @@ const connectDb = require('./database/db');
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', routes);
+app.use('/api', userRoutes, journalRoutes);
 connectDb();
 
 app.listen(process.env.PORT, () => {

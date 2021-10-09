@@ -1,5 +1,5 @@
-const e = require("express");
-const mongoose = require("mongoose");
+const e = require('express');
+const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
@@ -9,7 +9,7 @@ const connectDB = async () => {
     });
     console.log(`Connected To MongoDB`);
   } catch (error) {
-    console.log(e);
+    console.log(error);
   }
 };
 

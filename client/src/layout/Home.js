@@ -15,7 +15,7 @@ import {
   DropdownButton,
   Dropdown,
 } from 'react-bootstrap';
-import Pagination from './Pagination';
+import Pagination from '../components/Pagination';
 import axios from 'axios';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
@@ -25,7 +25,6 @@ import SortIcon from '@mui/icons-material/Sort';
 import Switch from '@mui/material/Switch';
 
 const Home = () => {
-  document.body.style.background = '#fffbef';
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editPost, setEditPost] = useState({});
@@ -58,13 +57,6 @@ const Home = () => {
     publishDescription: '',
     buttonText: '',
   });
-  const alert1 = () => {
-    alert('hi');
-  };
-  const alert2 = () => {
-    alert('bye');
-  };
-  const [modalFunc, setModalFunc] = useState(() => () => alert1);
 
   const token = localStorage.getItem('token');
   const config = {
@@ -72,6 +64,33 @@ const Home = () => {
       'x-auth-token': token,
     },
   };
+  document.body.style.background = '#fffbef';
+
+  const alert1 = (journal) => async () => {
+    const updatedJournal = { ...journal, public: !journal.public };
+    updateJournal(updatedJournal);
+
+    await axios.delete(`/api/feed/delete/${updatedJournal._id}`);
+
+    setShowPublish(false);
+    fetchPosts();
+  };
+  const alert2 = (journal) => async () => {
+    const updatedJournal = { ...journal, public: !journal.public };
+    updateJournal(updatedJournal);
+    await axios.post(
+      '/api/feed/post',
+      {
+        journal: updatedJournal,
+      },
+      config
+    );
+
+    setShowPublish(false);
+    fetchPosts();
+  };
+  const [modalFunc, setModalFunc] = useState(() => () => alert1());
+
   const fetchPosts = async () => {
     setLoading(true);
     const res = await axios.get('/api/user/journal', config);
@@ -81,7 +100,6 @@ const Home = () => {
 
   useEffect(() => {
     fetchPosts();
-    console.log('hi');
   }, []);
   // get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -126,8 +144,20 @@ const Home = () => {
     }, 3000);
   };
 
-  const deleteDream = async (id) => {
-    await axios.delete(`/api/user/journal/${id}`, config);
+  const deleteDreamHandler = (post) => {
+    setPublishModal({
+      ...publishModal,
+      publishTitle: 'Deleting Journal',
+      publishDescription: 'Are you sure you want to Delete this journal',
+      buttonText: 'Delete',
+    });
+    setModalFunc(() => deleteDream(post));
+    setShowPublish(true);
+  };
+
+  const deleteDream = (post) => async () => {
+    await axios.delete(`/api/user/journal/${post._id}`, config);
+    setShowPublish(false);
     setPopup(true);
     setVariant('danger');
 
@@ -178,7 +208,7 @@ const Home = () => {
   };
 
   const publishHandler = (journal) => {
-    if (checkSwitch) {
+    if (!journal.public) {
       setPublishModal({
         ...publishModal,
         publishTitle: 'Publish Journal',
@@ -186,7 +216,7 @@ const Home = () => {
           'Are you sure you want to Add Journal to the Public Feed',
         buttonText: 'Add',
       });
-      setModalFunc(() => alert2);
+      setModalFunc(() => alert2(journal));
     } else {
       setPublishModal({
         ...publishModal,
@@ -195,7 +225,8 @@ const Home = () => {
           'Are you sure you want to Remove Journal from the Public Feed',
         buttonText: 'Remove',
       });
-      setModalFunc(() => alert1);
+
+      setModalFunc(() => alert1(journal));
     }
     setShowPublish(true);
   };
@@ -341,7 +372,7 @@ const Home = () => {
                         Edit
                       </Button>
                       <Button
-                        onClick={() => deleteDream(post._id)}
+                        onClick={() => deleteDreamHandler(post)}
                         variant='danger'
                       >
                         Delete

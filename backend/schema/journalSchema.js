@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const journalSchema = mongoose.Schema({
+  publisherId: { type: String },
+  journalId: { type: String },
   title: { type: String },
   description: { type: String },
   theme: { type: String },
   feeling: { type: String },
   interpretation: { type: String },
-  public: { type: Boolean, default: false },
-  publishDate: { type: Date, default: Date.now },
   comments: [
     {
       publisherId: { type: String },
+      publisherName: { type: String },
       comment: { type: String },
     },
   ],
