@@ -66,7 +66,7 @@ const Home = () => {
   };
   document.body.style.background = '#fffbef';
 
-  const alert1 = (journal) => async () => {
+  const removeJournal = (journal) => async () => {
     const updatedJournal = { ...journal, public: !journal.public };
     updateJournal(updatedJournal);
 
@@ -75,7 +75,7 @@ const Home = () => {
     setShowPublish(false);
     fetchPosts();
   };
-  const alert2 = (journal) => async () => {
+  const addJournal = (journal) => async () => {
     const updatedJournal = { ...journal, public: !journal.public };
     updateJournal(updatedJournal);
     await axios.post(
@@ -89,7 +89,7 @@ const Home = () => {
     setShowPublish(false);
     fetchPosts();
   };
-  const [modalFunc, setModalFunc] = useState(() => () => alert1());
+  const [modalFunc, setModalFunc] = useState(() => () => removeJournal());
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -131,7 +131,11 @@ const Home = () => {
     const edittedJournals = response.data.journal.map((n) => {
       return n._id === editPost._id ? { ...editPost } : n;
     });
+    console.log(editPost);
     await axios.put('/api/user/journal', { journal: edittedJournals }, config);
+    await axios.put('/api/feed/journal/update', {
+      editPost: editPost,
+    });
     setShowEdit(false);
     fetchPosts();
     setVariant('success');
@@ -157,6 +161,8 @@ const Home = () => {
 
   const deleteDream = (post) => async () => {
     await axios.delete(`/api/user/journal/${post._id}`, config);
+    await axios.delete(`/api/feed/delete/${post._id}`);
+
     setShowPublish(false);
     setPopup(true);
     setVariant('danger');
@@ -216,7 +222,7 @@ const Home = () => {
           'Are you sure you want to Add Journal to the Public Feed',
         buttonText: 'Add',
       });
-      setModalFunc(() => alert2(journal));
+      setModalFunc(() => addJournal(journal));
     } else {
       setPublishModal({
         ...publishModal,
@@ -226,7 +232,7 @@ const Home = () => {
         buttonText: 'Remove',
       });
 
-      setModalFunc(() => alert1(journal));
+      setModalFunc(() => removeJournal(journal));
     }
     setShowPublish(true);
   };

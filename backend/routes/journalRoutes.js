@@ -34,4 +34,21 @@ router.get('/feed/', async (req, res) => {
   const journals = await Journal.find();
   res.send(journals);
 });
+
+router.put('/feed/journal/update', async (req, res) => {
+  const { editPost } = req.body;
+  const journal = await Journal.findById(editPost._id).lean();
+  const newJournal = {
+    ...journal,
+    title: editPost.title,
+    description: editPost.description,
+    theme: editPost.theme,
+    feeling: editPost.feeling,
+    interpretation: editPost.interpretation,
+  };
+  console.log(newJournal);
+  await Journal.updateOne({ _id: editPost._id }, newJournal);
+  res.send('Updated Journal');
+});
+
 module.exports = router;

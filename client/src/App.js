@@ -16,10 +16,8 @@ const App = () => {
             <Container>
               <Route exact path='/home' component={Home} />
               <Route exact path='/feed' component={Feed} />
-              <Route exact path='/landingPage' component={LandingPage} />
             </Container>
           </div>
-          <Route></Route>
         </Switch>
       </Router>
     </>

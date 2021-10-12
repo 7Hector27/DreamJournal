@@ -84,8 +84,4 @@ router.delete('/user/journal/:id', authMiddleware, async (req, res) => {
   res.json('Journal Deleted');
 });
 
-router.put('/user/journal/:id', authMiddleware, async (req, res) => {
-  res.json('journal updated');
-});
-
 module.exports = router;
