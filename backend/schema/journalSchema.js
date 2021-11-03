@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const journalSchema = mongoose.Schema({
   publisherId: { type: String },
+  publisherName: { type: String },
   journalId: { type: String },
   title: { type: String },
   description: { type: String },

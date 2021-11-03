@@ -248,7 +248,7 @@ const Home = () => {
             ' linear-gradient(90deg, rgba(50,85,139,1) 0%, rgba(135,114,173,1) 100%)',
           padding: '20px',
           marginTop: '50px',
-          borderRadius: '3%',
+          borderRadius: '15px',
         }}
       >
         <div>

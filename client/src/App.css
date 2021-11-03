@@ -1,0 +1,15 @@
+.feedBody {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 16px; /* fallback */
+  max-height: 64px; /* fallback */
+  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.JournalListItems {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}

@@ -5,6 +5,8 @@ import { Container } from 'react-bootstrap';
 import LandingPage from './layout/LandingPage';
 import Home from './layout/Home';
 import Feed from './layout/Feed';
+import FeedJournal from './layout/FeedJournal';
+
 const App = () => {
   return (
     <>
@@ -16,6 +18,7 @@ const App = () => {
             <Container>
               <Route exact path='/home' component={Home} />
               <Route exact path='/feed' component={Feed} />
+              <Route exact path='/FeedJournal/:id' component={FeedJournal} />
             </Container>
           </div>
         </Switch>
