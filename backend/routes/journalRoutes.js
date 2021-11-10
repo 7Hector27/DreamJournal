@@ -59,4 +59,22 @@ router.put('/feed/journal/update', async (req, res) => {
   res.send('Updated Journal');
 });
 
+router.put('/feed/journal/comment', authMiddleware, async (req, res) => {
+  const { comment, id } = req.body;
+  const _id = req.user._id;
+  const user = await User.findById({ _id }).lean();
+  const journal = await Journal.findOne({ _id: id }).lean();
+  const newComment = [
+    ...journal.comments,
+    { publisherId: _id, publisherName: user.name, comment: comment },
+  ];
+  const newJournal = {
+    ...journal,
+    comments: newComment,
+  };
+
+  console.log(newJournal);
+  await Journal.updateOne({ _id: id }, newJournal);
+});
+
 module.exports = router;

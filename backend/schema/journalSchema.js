@@ -14,6 +14,7 @@ const journalSchema = mongoose.Schema({
       publisherId: { type: String },
       publisherName: { type: String },
       comment: { type: String },
+      date: { type: Date, default: Date.now },
     },
   ],
   createdAt: { type: Date, default: Date.now },
