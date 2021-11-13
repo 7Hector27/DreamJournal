@@ -6,16 +6,24 @@ import {
   ListGroup,
   Button,
   Card,
+  Dropdown,
+  DropdownButton,
+  ListGroupItem,
+  Row,
+  Col,
 } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import axios from 'axios';
+import SortIcon from '@mui/icons-material/Sort';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 const FeedJournal = () => {
   const { id } = useParams();
   const [journal, setJournal] = useState({});
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
-
+  const [user, setUser] = useState({});
   const token = localStorage.getItem('token');
   const config = {
     headers: {
@@ -32,6 +40,8 @@ const FeedJournal = () => {
     indexOfFirstPost,
     indexOfLastPost
   );
+  console.log(currentPosts);
+
   //Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -51,8 +61,24 @@ const FeedJournal = () => {
     setComment('');
   };
 
-  useEffect(() => {
+  const dropDownFilter = async (option) => {
+    const res = await axios.get('/api/user/journal', config);
+    if (option === 1) {
+    }
+    if (option === 2) {
+      const favPosts = res.data.journal.reverse().map((fp) => fp);
+    }
+  };
+
+  const deleteComment = (FJcomment) => {
+    console.log(FJcomment._id);
+    axios.delete(`/api/feed/comment/remove/${FJcomment._id}/${journal._id}`);
+  };
+
+  useEffect(async () => {
     fetchJournal();
+    const user = await axios.get('/api/user/journal', config);
+    setUser(user.data);
     console.log(journal);
   }, []);
 
@@ -68,77 +94,36 @@ const FeedJournal = () => {
             paddingBottom: '10px',
           }}
         >
-          <ListGroup variant='flush'>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <h1
+          <Card>
+            <Card.Header>
+              <Card.Title
                 style={{
                   textDecoration: 'underline',
-                  fontSize: '40px',
+                  fontSize: '32px',
                 }}
               >
                 {journal.title}
-              </h1>
-              <h6>{journal?.createdAt.slice(0, 10)} </h6>
-            </ListGroup.Item>
+              </Card.Title>
+              <small>
+                posted by {journal.publisherName} on{' '}
+                {journal.createdAt.substring(0, 10)}
+              </small>
+            </Card.Header>
+            <Card.Body>
+              <Card.Title>{journal.description}</Card.Title>
+            </Card.Body>
+            <Card.Body>
+              <Row>
+                <Col sm={2}>Interpretation:</Col>
+                <Col sm={9}>{journal.interpretation}</Col>
+              </Row>
+              <div> </div>
+              <div>feeling:{journal.feeling}</div>
+              <div>theme:{journal.theme}</div>{' '}
+            </Card.Body>
+          </Card>
 
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <div>{journal.description}</div>
-            </ListGroup.Item>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <div>{journal.interpretation}</div>
-            </ListGroup.Item>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <div>{journal.feeling}</div>
-            </ListGroup.Item>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <div>{journal.publisherName}</div>
-            </ListGroup.Item>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            >
-              <div>{journal.theme}</div>
-            </ListGroup.Item>
-            <ListGroup.Item
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid black',
-              }}
-            ></ListGroup.Item>
+          <div style={{ marginTop: '10px' }}>
             <InputGroup>
               <InputGroup.Text>Comment</InputGroup.Text>
               <FormControl
@@ -150,23 +135,46 @@ const FeedJournal = () => {
               />
               <Button onClick={() => CommentSubmitHandler()}>Submit</Button>
             </InputGroup>
-          </ListGroup>
+          </div>
 
           <div
             style={{
               background: 'white',
-              marginTop: '30px',
+              marginTop: '10px',
               marginBottom: '30px',
             }}
           >
-            <h3>{journal.comments.length} Comments </h3>
+            <h3 style={{ marginBottom: '15px' }}>
+              {journal.comments.length} Comments
+              <div style={{ float: 'right' }}>
+                {/* <DropdownButton id='dropdown-basic-button' title={<SortIcon />}>
+                  <Dropdown.Item onClick={() => dropDownFilter(1)}>
+                    Newest
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => dropDownFilter(2)}>
+                    Oldest
+                  </Dropdown.Item>
+                </DropdownButton> */}
+              </div>
+            </h3>
             {currentPosts.map((comment) => (
-              <Card>
+              <Card style={{ marginTop: '5px' }}>
                 <Card.Header>
                   {comment.publisherName}{' '}
                   <small className='text-muted'>
                     {comment.date.substring(0, 10)}
-                  </small>
+                  </small>{' '}
+                  {user._id == comment.publisherId && (
+                    <DropdownButton
+                      id='dropdown-basic-button'
+                      style={{ float: 'right' }}
+                      title={<MoreVertIcon />}
+                    >
+                      <Dropdown.Item onClick={() => deleteComment(comment)}>
+                        Delete
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  )}
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>{comment.comment}</Card.Text>
@@ -177,7 +185,7 @@ const FeedJournal = () => {
               postsPerPage={postsPerPage}
               totalPosts={journal.comments.length}
               paginate={paginate}
-              style={{ marginBottom: '10px' }}
+              style={{ marginBottom: '10px', marginTop: '10px' }}
             />
           </div>
         </Container>

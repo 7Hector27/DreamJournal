@@ -77,4 +77,19 @@ router.put('/feed/journal/comment', authMiddleware, async (req, res) => {
   await Journal.updateOne({ _id: id }, newJournal);
 });
 
+router.delete('/feed/comment/remove/:id/:jid', async (req, res) => {
+  const id = req.params.id;
+  const jid = req.params.jid;
+  const journal = await Journal.findById({ _id: jid }).lean();
+  const newJournal = journal.comments.filter((comment) => comment._id != id);
+
+  const updatedJournal = {
+    ...journal,
+    comments: newJournal,
+  };
+  console.log(updatedJournal);
+  await Journal.updateOne({ _id: jid }, updatedJournal);
+  // res.json('Journal Deleted');
+});
+
 module.exports = router;

@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Badge } from 'react-bootstrap';
+import {
+  Container,
+  Card,
+  Badge,
+  DropdownButton,
+  Dropdown,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import axios from 'axios';
 import CommentIcon from '@mui/icons-material/Comment';
+import SortIcon from '@mui/icons-material/Sort';
+
 const Feed = () => {
   const [loading, setLoading] = useState('');
 
@@ -26,6 +34,19 @@ const Feed = () => {
     setJournals(res.data);
     setLoading(false);
   };
+
+  const dropDownFilter = async (option) => {
+    const res = await axios.get('/api/feed/');
+    if (option === 1) {
+      fetchJournals();
+    }
+    if (option === 2) {
+      const oldestJournals = res.data.reverse().map((journal) => journal);
+
+      setJournals(oldestJournals);
+    }
+  };
+
   useEffect(() => {
     fetchJournals();
   }, []);
@@ -41,6 +62,21 @@ const Feed = () => {
         alignItems: 'center',
       }}
     >
+      <div>
+        <DropdownButton
+          id='dropdown-basic-button'
+          title={<SortIcon />}
+          style={{ marginLeft: '85%' }}
+        >
+          <Dropdown.Item onClick={() => dropDownFilter(1)}>
+            Newest
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => dropDownFilter(2)}>
+            Oldest
+          </Dropdown.Item>
+        </DropdownButton>
+      </div>
+
       {currentPosts.map((journal) => (
         <Card
           style={{
