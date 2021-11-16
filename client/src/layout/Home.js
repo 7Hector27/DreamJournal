@@ -14,6 +14,8 @@ import {
   FloatingLabel,
   DropdownButton,
   Dropdown,
+  OverlayTrigger,
+  Tooltip,
 } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
 import axios from 'axios';
@@ -64,7 +66,7 @@ const Home = () => {
       'x-auth-token': token,
     },
   };
-  document.body.style.background = '#fffbef';
+  document.body.style.background = '#D7E4EE';
 
   const removeJournal = (journal) => async () => {
     const updatedJournal = { ...journal, public: !journal.public };
@@ -245,9 +247,11 @@ const Home = () => {
       <Container
         style={{
           background:
-            ' linear-gradient(90deg, rgba(50,85,139,1) 0%, rgba(135,114,173,1) 100%)',
+            ' linear-gradient(90deg, rgba(59,126,161,1) 0%, rgba(29,2,51,1) 100%)',
           padding: '20px',
+          paddingTop: '30px',
           marginTop: '50px',
+          paddingBottom: '40px',
           borderRadius: '15px',
         }}
       >
@@ -267,25 +271,37 @@ const Home = () => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Form>
-            <Button
-              onClick={() => setShow(true)}
-              style={{ marginRight: '5px' }}
+            <OverlayTrigger
+              placement='top'
+              delay={{ show: 250, hide: 400 }}
+              overlay={<Tooltip>Add Journal Entry</Tooltip>}
             >
-              +
-            </Button>
-            <div style={{ float: 'right' }}>
-              <DropdownButton id='dropdown-basic-button' title={<SortIcon />}>
-                <Dropdown.Item onClick={() => dropDownFilter(1)}>
-                  Favorites
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => dropDownFilter(2)}>
-                  Oldest
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => fetchPosts()}>
-                  Newest
-                </Dropdown.Item>
-              </DropdownButton>
-            </div>
+              <Button
+                onClick={() => setShow(true)}
+                style={{ marginRight: '5px' }}
+              >
+                +
+              </Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              placement='top'
+              delay={{ show: 250, hide: 400 }}
+              overlay={<Tooltip>Sort Journals</Tooltip>}
+            >
+              <div style={{ float: 'right' }}>
+                <DropdownButton id='dropdown-basic-button' title={<SortIcon />}>
+                  <Dropdown.Item onClick={() => dropDownFilter(1)}>
+                    Favorites
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => dropDownFilter(2)}>
+                    Oldest
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => fetchPosts()}>
+                    Newest
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
+            </OverlayTrigger>
           </div>
         </div>
         <div

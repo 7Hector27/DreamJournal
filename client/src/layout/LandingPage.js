@@ -18,12 +18,13 @@ import { userLogin } from '../actions/userActions';
 
 function LandingPage() {
   document.body.style.background =
-    'linear-gradient(90deg, rgba(255,251,239,1) 0%, rgba(135,114,173,1) 96%)';
+    'linear-gradient(90deg, rgba(59,126,161,1) 0%, rgba(29,2,51,1) 100%)';
 
   const history = useHistory();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [email1, setEmail1] = useState('');
   const [password1, setPassword1] = useState('');
   const [popup, setPopup] = useState(false);
@@ -39,13 +40,24 @@ function LandingPage() {
       'x-auth-token': token,
     },
   };
-  const SignUpHandler = async (name, email, password) => {
+  const SignUpHandler = async (name, email, password, confirmPassword) => {
     if (name === '' || email === '' || password === '') {
       setShow(false);
       setPopup(true);
       setVariant('danger');
 
       setText('Please Fill In All Input Fields');
+      setTimeout(function () {
+        setPopup(false);
+        setText('');
+        setVariant('');
+      }, 3000);
+    } else if (password !== confirmPassword) {
+      setShow(false);
+      setPopup(true);
+      setVariant('danger');
+
+      setText('Passwords Must Match');
       setTimeout(function () {
         setPopup(false);
         setText('');
@@ -95,7 +107,7 @@ function LandingPage() {
         history.push('/home')
       ) : (
         <>
-          <h1 style={{ textAlign: 'center', marginTop: '2%' }}>
+          <h1 style={{ textAlign: 'center', marginTop: '2%', color: 'white' }}>
             Dream Journal
           </h1>
           <Container
@@ -103,7 +115,8 @@ function LandingPage() {
               marginTop: '5%',
               width: '500px',
               padding: '15px',
-              background: '#fffbef',
+              background: '#D7E4EE',
+              borderRadius: '25px',
             }}
           >
             <Tabs
@@ -114,7 +127,7 @@ function LandingPage() {
               <Tab eventKey='home' title='Sign Up'>
                 <InputGroup size='sm' className='mb-3'>
                   <InputGroup.Text id='inputGroup-sizing-sm'>
-                    Name
+                    Full Name
                   </InputGroup.Text>
                   <FormControl
                     aria-label='Small'
@@ -123,7 +136,7 @@ function LandingPage() {
                 </InputGroup>
                 <InputGroup size='sm' className='mb-3'>
                   <InputGroup.Text id='inputGroup-sizing-sm'>
-                    Email
+                    Email Adress
                   </InputGroup.Text>
                   <FormControl
                     aria-label='Small'
@@ -136,12 +149,25 @@ function LandingPage() {
                   </InputGroup.Text>
                   <FormControl
                     aria-label='Small'
+                    type='password'
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </InputGroup>
+                <InputGroup size='sm' className='mb-3'>
+                  <InputGroup.Text id='inputGroup-sizing-sm'>
+                    Confirm Password
+                  </InputGroup.Text>
+                  <FormControl
+                    aria-label='Small'
+                    type='password'
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </InputGroup>
                 <Button
-                  onClick={() => SignUpHandler(name, email, password)}
-                  style={{ marginLeft: '80%' }}
+                  onClick={() =>
+                    SignUpHandler(name, email, password, confirmPassword)
+                  }
+                  style={{ marginLeft: '80%', BackgroundColor: '#1d0233' }}
                 >
                   Sign Up
                 </Button>
@@ -161,6 +187,7 @@ function LandingPage() {
                     Password
                   </InputGroup.Text>
                   <FormControl
+                    type='password'
                     aria-label='Small'
                     onChange={(e) => setPassword1(e.target.value)}
                   />

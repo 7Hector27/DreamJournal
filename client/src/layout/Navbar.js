@@ -1,5 +1,11 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  Container,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,7 +25,7 @@ const NavbarComponent = () => {
   return (
     <Navbar
       style={{
-        backgroundColor: '#021C33',
+        backgroundColor: '#1d0233',
       }}
     >
       <Container>
@@ -44,9 +50,15 @@ const NavbarComponent = () => {
       <Nav className='ml-auto'>
         {' '}
         <Container>
-          <Nav.Link onClick={signOutHandler} style={{ color: 'white' }}>
-            <LogoutIcon />
-          </Nav.Link>
+          <OverlayTrigger
+            placement='left'
+            delay={{ show: 250, hide: 400 }}
+            overlay={<Tooltip>Sign Out</Tooltip>}
+          >
+            <Nav.Link onClick={signOutHandler} style={{ color: 'white' }}>
+              <LogoutIcon />
+            </Nav.Link>
+          </OverlayTrigger>
         </Container>
       </Nav>
     </Navbar>
