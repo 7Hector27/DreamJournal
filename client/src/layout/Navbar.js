@@ -25,7 +25,9 @@ const NavbarComponent = () => {
   return (
     <Navbar
       style={{
-        backgroundColor: '#1d0233',
+        background:
+          'linear-gradient(90deg, rgba(59,126,161,1) 0%, rgba(29,2,51,1) 100%)',
+        fontFamily: 'IBM Plex Serif, serif',
       }}
     >
       <Container>
@@ -37,10 +39,16 @@ const NavbarComponent = () => {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='ml-auto'>
-            <LinkContainer to={`/home`} style={{ color: 'white' }}>
+            <LinkContainer
+              to={`/home`}
+              style={{ color: 'white', fontSize: '22px' }}
+            >
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to={`/Feed`} style={{ color: 'white' }}>
+            <LinkContainer
+              to={`/Feed`}
+              style={{ color: 'white', fontSize: '22px' }}
+            >
               <Nav.Link>Feed</Nav.Link>
             </LinkContainer>
           </Nav>
@@ -56,7 +64,7 @@ const NavbarComponent = () => {
             overlay={<Tooltip>Sign Out</Tooltip>}
           >
             <Nav.Link onClick={signOutHandler} style={{ color: 'white' }}>
-              <LogoutIcon />
+              <LogoutIcon style={{ fontSize: '32px' }} />
             </Nav.Link>
           </OverlayTrigger>
         </Container>

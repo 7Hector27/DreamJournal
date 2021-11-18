@@ -102,6 +102,7 @@ const Feed = () => {
           alignItems: 'center',
           display: 'flex',
           justifyContent: 'flex-end',
+          fontFamily: 'IM Fell DW Pica, serif',
         }}
       >
         <OverlayTrigger
@@ -133,7 +134,7 @@ const Feed = () => {
           >
             <HighlightOffIcon
               onClick={() => clearSearch()}
-              style={{ fontSize: '35px', color: 'red' }}
+              style={{ fontSize: '35px', color: '#ba0000' }}
             />
           </OverlayTrigger>
         )}
@@ -156,11 +157,12 @@ const Feed = () => {
         style={{
           background:
             ' linear-gradient(90deg, rgba(59,126,161,1) 0%, rgba(29,2,51,1) 100%)',
-          padding: '20px',
+          padding: '3%',
           marginTop: '5px',
           borderRadius: '15px',
           width: 'auto',
           alignItems: 'center',
+          fontFamily: 'IM Fell DW Pica, serif',
         }}
       >
         {currentPosts.map((journal) => (
@@ -170,15 +172,17 @@ const Feed = () => {
             overlay={<Tooltip>Read Journal Entry</Tooltip>}
           >
             <Card
+              border='primary '
               style={{
-                width: '26rem',
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 marginBottom: '10px',
+                width: '80%',
+                objectFit: 'contain',
               }}
             >
               <Card.Header style={{ textAlign: 'center' }}>
-                {journal.title}
+                <h2> {journal.title}</h2>
               </Card.Header>
               <Link
                 to={`/FeedJournal/${journal._id}`}
@@ -202,8 +206,11 @@ const Feed = () => {
 
                 <Card.Text>
                   Posted by {journal.publisherName}
-                  <Card.Subtitle className='mb-2 text-muted'>
-                    {journal.createdAt.slice(3, 10)}
+                  <Card.Subtitle
+                    className='mb-2 text-muted'
+                    style={{ fontFamily: 'IBM Plex Serif, serif' }}
+                  >
+                    {journal.createdAt.slice(0, 10)}
                   </Card.Subtitle>
                 </Card.Text>
               </Card.Footer>
@@ -219,10 +226,11 @@ const Feed = () => {
           marginTop: '5px',
           marginBottom: '5px',
           borderRadius: '15px',
-          paddingTop: '3%',
-          display: 'flex',
+          paddingTop: '1%',
           justifyContent: 'center',
+
           width: 'auto',
+          maxHeight: '60px',
         }}
       >
         <Pagination

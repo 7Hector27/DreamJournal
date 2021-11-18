@@ -107,7 +107,14 @@ function LandingPage() {
         history.push('/home')
       ) : (
         <>
-          <h1 style={{ textAlign: 'center', marginTop: '2%', color: 'white' }}>
+          <h1
+            style={{
+              textAlign: 'center',
+              marginTop: '2%',
+              color: 'white',
+              fontFamily: 'IM Fell DW Pica, serif',
+            }}
+          >
             Dream Journal
           </h1>
           <Container
@@ -117,6 +124,7 @@ function LandingPage() {
               padding: '15px',
               background: '#D7E4EE',
               borderRadius: '25px',
+              fontFamily: 'IM Fell DW Pica, serif',
             }}
           >
             <Tabs

@@ -25,6 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SortIcon from '@mui/icons-material/Sort';
 import Switch from '@mui/material/Switch';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Home = () => {
   const [show, setShow] = useState(false);
@@ -42,6 +43,8 @@ const Home = () => {
     public: false,
   });
   const [search, setSearch] = useState('');
+  const [clearFilter, setClearFilter] = useState(false);
+
   //pagination attempt
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -98,6 +101,11 @@ const Home = () => {
     const res = await axios.get('/api/user/journal', config);
     setPosts(res.data.journal);
     setLoading(false);
+  };
+
+  const clearSearch = () => {
+    fetchPosts();
+    setClearFilter(false);
   };
 
   useEffect(() => {
@@ -197,6 +205,7 @@ const Home = () => {
       });
       console.log(filteredPosts);
       setPosts(filteredPosts);
+      setClearFilter(true);
     }
   };
 
@@ -221,7 +230,7 @@ const Home = () => {
         ...publishModal,
         publishTitle: 'Publish Journal',
         publishDescription:
-          'Are you sure you want to Add Journal to the Public Feed',
+          'Are you sure you want to add this journal to the Public Feed',
         buttonText: 'Add',
       });
       setModalFunc(() => addJournal(journal));
@@ -253,6 +262,8 @@ const Home = () => {
           marginTop: '50px',
           paddingBottom: '40px',
           borderRadius: '15px',
+          fontFamily: 'IBM Plex Serif, serif',
+          boxShadow: '10px 8px 5px #2F4C74',
         }}
       >
         <div>
@@ -271,6 +282,18 @@ const Home = () => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Form>
+            {clearFilter && (
+              <OverlayTrigger
+                placement='top'
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip>Clear Search</Tooltip>}
+              >
+                <HighlightOffIcon
+                  onClick={() => clearSearch()}
+                  style={{ fontSize: '35px', color: '#ba0000' }}
+                />
+              </OverlayTrigger>
+            )}
             <OverlayTrigger
               placement='top'
               delay={{ show: 250, hide: 400 }}
@@ -311,7 +334,7 @@ const Home = () => {
             padding: '10px',
           }}
         >
-          <h2>Past Entries</h2>
+          <h2 style={{ fontFamily: 'IBM Plex Serif, serif' }}>Past Entries</h2>
 
           {loading ? (
             <h2>Loading Journals...</h2>
@@ -326,7 +349,10 @@ const Home = () => {
                 >
                   <Accordion.Header>
                     <Row>
-                      {post.title}
+                      <Col>
+                        <h5 style={{ fontWeight: 'bold' }}> {post.title}</h5>
+                      </Col>
+
                       <Col>{post.favorite && <StarIcon />}</Col>
                     </Row>
                   </Accordion.Header>
@@ -334,6 +360,7 @@ const Home = () => {
                     style={{
                       marginBottom: '30px',
                       color: '#573092',
+                      paddingBottom: '35px',
                     }}
                   >
                     <FormControlLabel
@@ -349,38 +376,84 @@ const Home = () => {
                         display: 'block',
                       }}
                     />
-                    <h6 style={{ color: 'black' }}>Description:</h6>
-                    <div>{post.description}</div>
+                    <h6
+                      style={{
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      Description:
+                    </h6>
+                    <div style={{ fontWeight: 'bold' }}>{post.description}</div>
 
-                    <h6 style={{ marginTop: '10px', color: 'black' }}>
+                    <h6
+                      style={{
+                        marginTop: '10px',
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       Theme:{' '}
                     </h6>
-                    {post.theme}
+                    <div style={{ fontWeight: 'bold' }}>{post.theme}</div>
 
-                    <h6 style={{ marginTop: '10px', color: 'black' }}>
+                    <h6
+                      style={{
+                        marginTop: '10px',
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       Characters:{' '}
                     </h6>
-                    {post.characters}
+                    <div style={{ fontWeight: 'bold' }}>{post.characters}</div>
 
-                    <h6 style={{ marginTop: '10px', color: 'black' }}>
+                    <h6
+                      style={{
+                        marginTop: '10px',
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       Location:{' '}
                     </h6>
-                    {post.location}
+                    <div style={{ fontWeight: 'bold' }}>{post.location}</div>
 
-                    <h6 style={{ marginTop: '10px', color: 'black' }}>
+                    <h6
+                      style={{
+                        marginTop: '10px',
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       How i felt during my dream:{' '}
                     </h6>
-                    {post.feeling}
+                    <div style={{ fontWeight: 'bold' }}>{post.feeling}</div>
 
-                    <h6 style={{ marginTop: '10px', color: 'black' }}>
+                    <h6
+                      style={{
+                        marginTop: '10px',
+                        color: 'black',
+                        textDecoration: 'underline',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       Interpretation:{' '}
                     </h6>
-                    {post.interpretation}
+                    <div style={{ fontWeight: 'bold' }}>
+                      {' '}
+                      {post.interpretation}
+                    </div>
 
                     <div
                       style={{
                         float: 'right',
-                        marginTop: '20px',
+                        marginTop: '15px',
                         paddingTop: '5px',
                       }}
                     >

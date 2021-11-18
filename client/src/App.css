@@ -1,10 +1,10 @@
 .feedBody {
   overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: large;
   display: -webkit-box;
-  line-height: 16px; /* fallback */
-  max-height: 64px; /* fallback */
-  -webkit-line-clamp: 3; /* number of lines to show */
+  line-height: 32px; /* fallback */
+  max-height: 150px; /* fallback */
+  -webkit-line-clamp: 4; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
 

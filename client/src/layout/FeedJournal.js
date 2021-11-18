@@ -57,8 +57,7 @@ const FeedJournal = () => {
       config
     );
     setComment('');
-    const feedJournal = await axios.get(`/api/feed/journal/${id}`);
-    setJournal(feedJournal.data);
+    window.location.reload();
   };
 
   const dropDownFilter = async (option) => {
@@ -70,9 +69,10 @@ const FeedJournal = () => {
     }
   };
 
-  const deleteComment = (FJcomment) => {
+  const deleteComment = async (FJcomment) => {
     console.log(FJcomment._id);
     axios.delete(`/api/feed/comment/remove/${FJcomment._id}/${journal._id}`);
+    window.location.reload();
   };
 
   useEffect(async () => {
@@ -93,6 +93,8 @@ const FeedJournal = () => {
               'linear-gradient(90deg, rgba(59,126,161,1) 0%, rgba(29,2,51,1) 100%)',
             paddingTop: '30px',
             paddingBottom: '10px',
+            fontFamily: 'IBM Plex Serif, serif',
+            fontSize: '1.2rem',
           }}
         >
           <Card>
@@ -121,7 +123,9 @@ const FeedJournal = () => {
                     <td>{journal.interpretation}</td>
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: 'bold' }}>Feeling</td>
+                    <td style={{ fontWeight: 'bold' }}>
+                      Feelings after the dream
+                    </td>
                     <td>{journal.feeling}</td>
                   </tr>
                   <tr>
